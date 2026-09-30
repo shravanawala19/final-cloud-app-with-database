@@ -97,6 +97,28 @@
 
             <!--Check here to see more details Bootstrap checkbox
              https://www.w3schools.com/bootstrap4/bootstrap_forms_inputs.asp-->
+             <button class="btn btn-primary btn-block" data-toggle="collapse" data-target="#exam">Start Exam</button>
+    <div id="exam" class="collapse">
+        <form id="questionform" action="{% url 'onlinecourse:submit' course.id %}" method="post">
+            {% csrf_token %}
+            {% for question in course.question_set.all %}
+            <div class="card mt-4">
+                <div class="card-header"><h5>{{ question.question_text }}</h5></div>
+                <div class="card-body">
+                    {% for choice in question.choice_set.all %}
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="choice_{{question.id}}" class="form-check-input" id="{{choice.id}}" value="{{choice.id}}">{{ choice.choice_text }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            <input class="btn btn-success btn-block mt-4" type="submit" value="Submit">
+        </form>
+    </div>
+
     </div>
 </body>
 </html>
